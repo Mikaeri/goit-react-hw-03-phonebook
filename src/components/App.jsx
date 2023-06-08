@@ -4,16 +4,37 @@ import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import PropTypes from 'prop-types';
 
+const LOCAL_STORAGE_KEY = 'contacts';
+
+const startValue = {
+  contacts: [
+    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  ],
+  filter: '',
+};
+
 export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+  state = { ...startValue };
+
+  componentDidMount() {
+    const dataFromLocaleStorage = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY)
+    );
+    if (!dataFromLocaleStorage.length) {
+      return this.setState({ startValue });
+    }
+    this.setState({ contacts: dataFromLocaleStorage });
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify(this.state.contacts)
+    );
+  }
 
   handleDeleteContact = id => {
     this.setState(prevState => ({
