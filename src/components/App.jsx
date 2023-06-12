@@ -23,7 +23,7 @@ export class App extends Component {
     const dataFromLocaleStorage = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEY)
     );
-    if (!dataFromLocaleStorage.length) {
+    if (!dataFromLocaleStorage || !dataFromLocaleStorage.length) {
       return this.setState({ startValue });
     }
     this.setState({ contacts: dataFromLocaleStorage });
