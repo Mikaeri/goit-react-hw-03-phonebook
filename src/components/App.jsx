@@ -29,11 +29,13 @@ export class App extends Component {
     this.setState({ contacts: dataFromLocaleStorage });
   }
 
-  componentDidUpdate() {
-    localStorage.setItem(
-      LOCAL_STORAGE_KEY,
-      JSON.stringify(this.state.contacts)
-    );
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify(this.state.contacts)
+      );
+    }
   }
 
   handleDeleteContact = id => {
